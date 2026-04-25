@@ -2,17 +2,14 @@ import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
-// IMPORTANTE: Reemplaza esto con tus credenciales de Firebase
-// Ve a: https://console.firebase.google.com
-// Proyecto → Configuración → Configuración del proyecto → Tus aplicaciones
 const firebaseConfig = {
-  apiKey: "AIzaSyCNrQ37YfeNoCuLg1IMiQssZ9AbrRLQgXY",
-  authDomain: "mvp-fitness-b33ff.firebaseapp.com",
-  projectId: "mvp-fitness-b33ff",
-  storageBucket: "mvp-fitness-b33ff.firebasestorage.app",
-  messagingSenderId: "386551677441",
-  appId: "1:386551677441:web:c8e7090e5d4174ec3db600",
-  measurementId: "G-HPTEHQ20YW"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig)
