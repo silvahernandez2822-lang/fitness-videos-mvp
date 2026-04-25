@@ -34,4 +34,6 @@ Thumbs.db
 
 # Firebase
 .firebase/
-.firebaserc
+
+# Permitir .env de Cloud Functions (solo contiene ADMIN_EMAILS, sin credenciales secretas)
+!backend/functions/.env

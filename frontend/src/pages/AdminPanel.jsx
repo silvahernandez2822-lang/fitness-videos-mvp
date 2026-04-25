@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
-import { auth, db } from '../config/firebase'
+import { db } from '../config/firebase'
 import {
   collection,
   getDocs,
@@ -9,24 +9,7 @@ import {
   addDoc,
   orderBy
 } from 'firebase/firestore'
-
-const API_BASE = 'http://localhost:5000/api/admin'
-
-async function apiCall(method, endpoint, body = null) {
-  const token = await auth.currentUser?.getIdToken(true)
-  const opts = {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    }
-  }
-  if (body) opts.body = JSON.stringify(body)
-  const res = await fetch(`${API_BASE}${endpoint}`, opts)
-  const data = await res.json()
-  if (!res.ok) throw new Error(data.error || 'Error en el servidor')
-  return data
-}
+import { apiCall, FUNCTIONS } from '../config/apiClient'
 
 export default function AdminPanel() {
   const { user, isAdmin, logout } = useContext(AuthContext)
@@ -119,7 +102,7 @@ export default function AdminPanel() {
   const loadAUsers = async () => {
     setALoadingUsers(true)
     try {
-      const data = await apiCall('GET', '/users')
+      const data = await apiCall('GET', FUNCTIONS.getUsers)
       setAUsers(data.users || [])
     } catch (e) {
       setAMessage({ type: 'error', text: `Error cargando usuarios: ${e.message}` })
@@ -131,7 +114,7 @@ export default function AdminPanel() {
   const loadAVideos = async () => {
     setALoadingVideos(true)
     try {
-      const data = await apiCall('GET', '/videos')
+      const data = await apiCall('GET', FUNCTIONS.getVideos)
       setAVideos(data.videos || [])
     } catch (e) {
       setAMessage({ type: 'error', text: `Error cargando videos: ${e.message}` })
@@ -143,7 +126,7 @@ export default function AdminPanel() {
   const loadAAssignments = async (userId) => {
     setALoadingAssign(true)
     try {
-      const data = await apiCall('GET', `/users/${userId}/assignments`)
+      const data = await apiCall('GET', FUNCTIONS.getUserAssignments(userId))
       setAAssignments(data.assignments || [])
     } catch (e) {
       setAMessage({ type: 'error', text: `Error cargando asignaciones: ${e.message}` })
@@ -168,7 +151,8 @@ export default function AdminPanel() {
     setAAssigning(true)
     setAMessage(null)
     try {
-      await apiCall('POST', `/users/${aSelectedUser.uid}/assign-video`, {
+      await apiCall('POST', FUNCTIONS.assignVideo, {
+        userId: aSelectedUser.uid,
         videoId: aSelectedVideoId,
         orden: parseInt(aOrden)
       })
@@ -187,7 +171,7 @@ export default function AdminPanel() {
     if (!window.confirm('¿Eliminar esta asignación? Los demás videos se reordenarán automáticamente.')) return
     setAMessage(null)
     try {
-      const data = await apiCall('DELETE', `/assignments/${assignmentId}`)
+      const data = await apiCall('DELETE', FUNCTIONS.deleteAssignment(assignmentId))
       setAMessage({ type: 'success', text: data.message })
       await loadAAssignments(aSelectedUser.uid)
     } catch (e) {
