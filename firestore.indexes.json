@@ -1,0 +1,13 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "asignaciones",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "usuarioId", "order": "ASCENDING" },
+        { "fieldPath": "orden", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

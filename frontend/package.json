@@ -1,0 +1,26 @@
+{
+  "name": "fitness-videos-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
+    "firebase": "^11.0.0",
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.0",
+    "vite": "^6.4.2",
+    "tailwindcss": "^3.3.6",
+    "postcss": "^8.4.32",
+    "autoprefixer": "^10.4.16"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite"
+  }
+}
