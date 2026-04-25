@@ -1,5 +1,5 @@
-const { auth } = require('../config/firebaseAdmin')
-const { isAdmin } = require('../config/admins')
+const { auth } = require('./firebaseAdmin')
+const { isAdmin } = require('./admins')
 
 async function requireAdmin(req, res) {
   const authHeader = req.headers.authorization

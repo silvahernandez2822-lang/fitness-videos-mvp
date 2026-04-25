@@ -1,13 +1,11 @@
 import { auth } from './firebase'
 
-const CF_BASE = 'https://us-central1-mvp-fitness-b33ff.cloudfunctions.net'
-
 export const FUNCTIONS = {
-  getUsers:            `${CF_BASE}/getUsers`,
-  getVideos:           `${CF_BASE}/getVideos`,
-  getUserAssignments:  (userId)       => `${CF_BASE}/getUserAssignments?userId=${userId}`,
-  assignVideo:         `${CF_BASE}/assignVideo`,
-  deleteAssignment:    (assignmentId) => `${CF_BASE}/deleteAssignment?assignmentId=${assignmentId}`,
+  getUsers:            '/api/getUsers',
+  getVideos:           '/api/getVideos',
+  getUserAssignments:  (userId) => `/api/getUserAssignments?userId=${encodeURIComponent(userId)}`,
+  assignVideo:         '/api/assignVideo',
+  deleteAssignment:    (assignmentId) => `/api/deleteAssignment?assignmentId=${encodeURIComponent(assignmentId)}`,
 }
 
 export async function apiCall(method, url, body = null) {

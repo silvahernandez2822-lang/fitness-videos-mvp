@@ -21,12 +21,8 @@ export function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser)
-        const adminEmail = 'silvahernandez2822@gmail.com'
-        const emailMatch = currentUser.email === adminEmail
-        console.log('[Admin Debug] email del usuario:', currentUser.email)
-        console.log('[Admin Debug] email esperado:', adminEmail)
-        console.log('[Admin Debug] ¿es admin?:', emailMatch)
-        setIsAdmin(emailMatch)
+        const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'silvahernandez2822@gmail.com'
+        setIsAdmin(!!adminEmail && currentUser.email === adminEmail)
       } else {
         setUser(null)
         setIsAdmin(false)
@@ -50,28 +46,19 @@ export function AuthProvider({ children }) {
   const registerWithEmail = async (email, password, name) => {
     const result = await createUserWithEmailAndPassword(auth, email, password)
     await updateProfile(result.user, { displayName: name })
-    // Forzar refresco del objeto user para que displayName quede disponible de inmediato
     setUser({ ...result.user, displayName: name })
     return result.user
   }
 
   const loginWithEmail = async (email, password) => {
-    try {
-      const result = await signInWithEmailAndPassword(auth, email, password)
-      return result.user
-    } catch (error) {
-      throw error
-    }
+    const result = await signInWithEmailAndPassword(auth, email, password)
+    return result.user
   }
 
   const loginWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider()
-      const result = await signInWithPopup(auth, provider)
-      return result.user
-    } catch (error) {
-      throw error
-    }
+    const provider = new GoogleAuthProvider()
+    const result = await signInWithPopup(auth, provider)
+    return result.user
   }
 
   return (
